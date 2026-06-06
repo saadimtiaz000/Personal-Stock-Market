@@ -1,9 +1,12 @@
 import http from "node:http";
+import { createReadStream } from "node:fs";
+import { stat } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DIST_DIR = path.resolve(__dirname, "..", "dist");
 
 const PORT = Number(process.env.PORT || 8787);
 const MARKET_URL = "https://dps.psx.com.pk/";
@@ -11,6 +14,22 @@ const BROKERS_URL =
   "https://www.psx.com.pk/psx/resources-and-tools/investors/top-10-brokers";
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 12000;
+const MIME_TYPES = {
+  ".css": "text/css; charset=utf-8",
+  ".gif": "image/gif",
+  ".html": "text/html; charset=utf-8",
+  ".ico": "image/x-icon",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".js": "text/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
+  ".webp": "image/webp",
+  ".woff": "font/woff",
+  ".woff2": "font/woff2",
+};
 
 const COMPANY_UNIVERSE = [
   ["OGDC", "Oil & Gas Development Company Limited"],
@@ -88,6 +107,62 @@ function sendJson(res, status, payload) {
     "Cache-Control": "no-store",
   });
   res.end(body);
+}
+
+async function sendFile(req, res, filePath) {
+  const extension = path.extname(filePath).toLowerCase();
+  const isAsset = filePath.includes(`${path.sep}assets${path.sep}`);
+
+  res.writeHead(200, {
+    "Content-Type": MIME_TYPES[extension] || "application/octet-stream",
+    "Cache-Control": isAsset ? "public, max-age=31536000, immutable" : "no-cache",
+  });
+
+  if (req.method === "HEAD") {
+    res.end();
+    return;
+  }
+
+  createReadStream(filePath).pipe(res);
+}
+
+async function serveStatic(req, res, url) {
+  if (req.method !== "GET" && req.method !== "HEAD") {
+    return false;
+  }
+
+  let requestedPath;
+  try {
+    requestedPath = decodeURIComponent(url.pathname === "/" ? "/index.html" : url.pathname);
+  } catch {
+    return false;
+  }
+
+  const filePath = path.resolve(DIST_DIR, `.${requestedPath}`);
+  const isInsideDist = filePath === DIST_DIR || filePath.startsWith(`${DIST_DIR}${path.sep}`);
+
+  if (!isInsideDist) {
+    return false;
+  }
+
+  try {
+    const fileStats = await stat(filePath);
+    if (fileStats.isFile()) {
+      await sendFile(req, res, filePath);
+      return true;
+    }
+  } catch {
+    // Fall through to the SPA entry point below.
+  }
+
+  const indexPath = path.join(DIST_DIR, "index.html");
+  try {
+    await stat(indexPath);
+    await sendFile(req, res, indexPath);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 async function readBody(req) {
@@ -541,6 +616,10 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, await buildExpertOpinion(market, body.horizon));
     }
 
+    if (await serveStatic(req, res, url)) {
+      return;
+    }
+
     return sendJson(res, 404, { error: "Route not found" });
   } catch (error) {
     return sendJson(res, 500, { error: error.message || "Unexpected server error" });
@@ -548,5 +627,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Pakistan Market Desk API running on http://127.0.0.1:${PORT}`);
+  console.log(`Pakistan Market Desk running on http://127.0.0.1:${PORT}`);
 });

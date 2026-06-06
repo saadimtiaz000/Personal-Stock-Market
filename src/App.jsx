@@ -23,7 +23,10 @@ import {
 } from "lucide-react";
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8787";
+  import.meta.env.VITE_API_BASE_URL ||
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://127.0.0.1:8787"
+    : "");
 const FONT_FAMILY =
   '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, "Segoe UI", system-ui, sans-serif';
 
