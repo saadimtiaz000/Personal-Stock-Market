@@ -1,0 +1,20 @@
+{
+  "name": "pakistan-market-premium",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 3000 --force",
+    "api": "node server/index.js",
+    "check": "node --check server/index.js && vite build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "vite": "^7.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native-web": "^0.19.13",
+    "lucide-react": "^0.468.0"
+  },
+  "devDependencies": {}
+}
