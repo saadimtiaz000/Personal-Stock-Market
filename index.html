@@ -7,7 +7,7 @@
       name="description"
       content="Premium Pakistan stock market research dashboard for Pakistan Stock Exchange equities and broker rankings."
     />
-    <title>Pakistan Market Desk</title>
+    <title>Stock Market Analytics - Pakistan</title>
     <style>
       html,
       body,
@@ -25,9 +25,36 @@
         -webkit-font-smoothing: antialiased;
         text-rendering: geometricPrecision;
       }
-
       * {
         box-sizing: border-box;
+      }
+
+      @keyframes marketLogoFloat {
+        0%,
+        100% {
+          filter: drop-shadow(0 10px 16px rgba(14, 230, 123, 0.18));
+          transform: perspective(620px) rotateX(0deg) rotateY(-4deg)
+            translate3d(0, 0, 0) scale(1);
+        }
+
+        50% {
+          filter: drop-shadow(0 16px 24px rgba(255, 72, 80, 0.14))
+            drop-shadow(0 9px 18px rgba(14, 230, 123, 0.2));
+          transform: perspective(620px) rotateX(3deg) rotateY(5deg)
+            translate3d(0, -3px, 0) scale(1.025);
+        }
+      }
+
+      .market-logo-3d {
+        animation: marketLogoFloat 5.4s ease-in-out infinite;
+        transform-origin: center center;
+        will-change: filter, transform;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .market-logo-3d {
+          animation: none;
+        }
       }
     </style>
   </head>

@@ -1,0 +1,5 @@
+{
+  "powerquery.sdk.features.autoDetection": false,
+  "powerquery.sdk.project.autoDetection": false,
+  "powerquery.sdk.test.settingsFiles": []
+}

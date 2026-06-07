@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Pakistan Stock Market Analytics logo</title>
+  <desc id="desc">Blue glowing Pakistan stock market logo on a dark rounded iPhone-style background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="94" y1="64" x2="930" y2="960" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#061c3c"/>
+      <stop offset="0.5" stop-color="#031229"/>
+      <stop offset="1" stop-color="#061a46"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="51%" cy="43%" r="66%">
+      <stop offset="0" stop-color="#0b4ca8" stop-opacity="0.36"/>
+      <stop offset="0.56" stop-color="#082b6e" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#00112d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="blueMain" x1="172" y1="155" x2="810" y2="845" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60f4ff"/>
+      <stop offset="0.22" stop-color="#08bdf9"/>
+      <stop offset="0.57" stop-color="#087dff"/>
+      <stop offset="1" stop-color="#0439c9"/>
+    </linearGradient>
+    <linearGradient id="blueDeep" x1="418" y1="250" x2="774" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8dfcff"/>
+      <stop offset="0.42" stop-color="#0db8ff"/>
+      <stop offset="1" stop-color="#043fd2"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="160" y1="136" x2="856" y2="842" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b7fbff"/>
+      <stop offset="0.48" stop-color="#4cdaff"/>
+      <stop offset="1" stop-color="#2a82ff"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="208" y1="134" x2="472" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.52"/>
+      <stop offset="0.36" stop-color="#bff9ff" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="neon" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#3fe7ff" flood-opacity="0.78"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="18" flood-color="#087dff" flood-opacity="0.46"/>
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#001344" flood-opacity="0.5"/>
+    </filter>
+    <clipPath id="roundIcon">
+      <rect x="0" y="0" width="1024" height="1024" rx="178"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#roundIcon)">
+    <rect width="1024" height="1024" fill="url(#bg)"/>
+    <rect width="1024" height="1024" fill="url(#bgGlow)"/>
+
+    <g filter="url(#neon)" transform="translate(34 118) scale(0.98)">
+      <path
+        d="M376 104C246 144 150 268 150 413c0 178 145 323 323 323 98 0 187-44 247-115-50 29-108 45-169 45-185 0-335-150-335-335 0-91 37-174 96-234 21-21 43-38 64-53z"
+        fill="url(#blueMain)"
+        stroke="url(#edge)"
+        stroke-width="7"
+        stroke-linejoin="round"/>
+      <path
+        d="M353 119C252 166 176 279 176 410c0 139 87 261 210 309-98-62-163-171-163-295 0-135 75-251 186-309-20 1-39 3-56 4z"
+        fill="url(#shine)"
+        opacity="0.85"/>
+
+      <path
+        d="M452 190l38 78 86 12-62 61 15 86-77-40-77 40 15-86-62-61 86-12 38-78z"
+        fill="url(#blueMain)"
+        stroke="url(#edge)"
+        stroke-width="5"
+        stroke-linejoin="round"/>
+
+      <g fill="url(#blueDeep)" stroke="url(#edge)" stroke-width="3">
+        <path d="M392 665h61V548h-61z"/>
+        <path d="M486 665h62V505h-62z"/>
+        <path d="M582 665h61V408h-61z"/>
+        <path d="M677 665h62V320h-62z"/>
+        <path d="M773 665h62V230h-62z"/>
+      </g>
+
+      <g fill="url(#blueDeep)" stroke="url(#edge)" stroke-width="2">
+        <rect x="314" y="458" width="40" height="68" rx="4"/>
+        <rect x="330" y="432" width="8" height="30" rx="4"/>
+        <rect x="330" y="526" width="8" height="31" rx="4"/>
+
+        <rect x="384" y="407" width="40" height="78" rx="4"/>
+        <rect x="400" y="376" width="8" height="34" rx="4"/>
+        <rect x="400" y="485" width="8" height="35" rx="4"/>
+
+        <rect x="456" y="358" width="42" height="90" rx="5"/>
+        <rect x="473" y="321" width="8" height="39" rx="4"/>
+        <rect x="473" y="448" width="8" height="39" rx="4"/>
+
+        <rect x="530" y="300" width="44" height="104" rx="5"/>
+        <rect x="548" y="260" width="8" height="43" rx="4"/>
+        <rect x="548" y="404" width="8" height="43" rx="4"/>
+
+        <rect x="606" y="240" width="45" height="116" rx="5"/>
+        <rect x="624" y="196" width="8" height="47" rx="4"/>
+        <rect x="624" y="356" width="8" height="47" rx="4"/>
+      </g>
+
+      <path
+        d="M315 590l122-101 78 46 242-291"
+        fill="none"
+        stroke="url(#blueMain)"
+        stroke-width="29"
+        stroke-linejoin="miter"/>
+      <path
+        d="M322 582l115-94 77 45 238-286"
+        fill="none"
+        stroke="url(#edge)"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+      <path
+        d="M750 226l103-42-21 110-31-42-229 274-124-57-116 96-17-23 130-108 120 56 211-253-26-11z"
+        fill="url(#blueDeep)"
+        stroke="url(#edge)"
+        stroke-width="4"
+        stroke-linejoin="round"/>
+
+      <path
+        d="M501 788c92-12 164-49 225-116l52 61 39-45 105 96H501z"
+        fill="url(#blueMain)"
+        stroke="url(#edge)"
+        stroke-width="5"
+        stroke-linejoin="round"/>
+      <path
+        d="M558 772c52-18 99-49 142-92l45 54 40-48 75 68-58-7-29 35-32-48-68 52-33-47c-27 14-54 24-82 33z"
+        fill="#031229"/>
+      <path
+        d="M500 752c116-22 191-85 261-161"
+        fill="none"
+        stroke="url(#blueDeep)"
+        stroke-width="25"
+        stroke-linecap="round"/>
+      <path
+        d="M508 742c108-23 177-82 246-157"
+        fill="none"
+        stroke="url(#edge)"
+        stroke-width="7"
+        stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

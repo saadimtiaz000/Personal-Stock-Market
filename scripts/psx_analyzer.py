@@ -159,20 +159,107 @@ def daily_returns(closes):
     return returns
 
 
+def score_from_snapshot(stock, horizon):
+    symbol = stock.get("symbol", "")
+    name = stock.get("name", "")
+    latest = safe_number(stock.get("price")) or 0
+    daily = safe_number(stock.get("changePct")) or 0
+    ytd = safe_number(stock.get("ytd")) or 0
+    one_year = safe_number(stock.get("oneYear")) or 0
+    volume = safe_number(stock.get("volume")) or 0
+    price_to_earnings = safe_number(stock.get("pe"))
+    selected_return = ytd if horizon == "6m" else one_year
+    horizon_label = "six-month" if horizon == "6m" else "one-year"
+
+    liquidity_score = clamp(math.log10(max(volume, 1)) * 1.35, 0, 10)
+    valuation_score = 0
+    if price_to_earnings:
+        if 0 < price_to_earnings <= 12:
+            valuation_score = 6
+        elif price_to_earnings <= 20:
+            valuation_score = 2
+        else:
+            valuation_score = -4
+
+    trend_score = clamp(selected_return * 0.34, -18, 24)
+    current_score = clamp(daily * 2.2, -8, 8)
+    ytd_score = clamp(ytd * 0.16, -10, 12)
+    risk_estimate = clamp(abs(daily) * 12 + abs(ytd) * 0.32 + abs(one_year) * 0.12, 12, 72)
+    relative_strength = clamp(50 + selected_return * 0.18 + ytd * 0.1 + daily * 1.8, 15, 85)
+    projected_return = clamp(
+        selected_return * (0.35 if horizon == "6m" else 0.28)
+        + ytd * 0.12
+        + daily * 1.4
+        + valuation_score * 0.35
+        - risk_estimate * 0.06,
+        -18,
+        28,
+    )
+    score = clamp(
+        42 + trend_score + current_score + ytd_score + liquidity_score + valuation_score - risk_estimate * 0.18,
+        0,
+        100,
+    )
+    confidence = round(clamp(42 + score * 0.42 + liquidity_score - risk_estimate * 0.12, 32, 82))
+
+    if score >= 68 and projected_return > 7:
+        action = "Buy on pullback"
+    elif score >= 56 and projected_return > 3:
+        action = "Accumulate gradually"
+    elif score >= 46:
+        action = "Watch closely"
+    else:
+        action = "Avoid for now"
+
+    if latest:
+        support = latest * (1 - min(0.12, max(0.04, risk_estimate / 520)))
+        target = latest * (1 + projected_return / 100)
+        price_note = f" Reassess below Rs {support:.2f}; first model target is Rs {target:.2f}."
+    else:
+        price_note = ""
+
+    thesis = (
+        f"For the {horizon_label} view, the model estimates a {projected_return:.2f}% "
+        f"base case move using available PSX snapshot data: {selected_return:.2f}% selected-period "
+        f"momentum, {ytd:.2f}% YTD trend, {daily:.2f}% latest daily move, liquidity, and valuation."
+    )
+    risk = (
+        f"Risk estimate is {risk_estimate:.2f}% because the full historical window was limited; "
+        "confirm with fresh volume and broader market direction before acting."
+        f"{price_note}"
+    )
+
+    return {
+        "symbol": symbol,
+        "name": name,
+        "action": action,
+        "confidence": confidence,
+        "score": round(score, 2),
+        "thesis": thesis,
+        "risk": risk,
+        "indicators": {
+            "latestPrice": round(latest, 2) if latest else None,
+            "sixMonthReturn": round(ytd, 2),
+            "oneYearReturn": round(one_year, 2),
+            "relativeStrengthIndex": round(relative_strength, 2),
+            "movingAverage20": None,
+            "movingAverage50": None,
+            "movingAverage200": None,
+            "movingAverageConvergenceDivergence": None,
+            "annualizedVolatility": round(risk_estimate, 2),
+            "averageVolume20": round(volume),
+            "maximumDrawdown": None,
+            "projectedReturn": round(projected_return, 2),
+        },
+    }
+
+
 def score_stock(stock, history, horizon):
     symbol = stock.get("symbol", "")
     closes = [item["close"] for item in history]
     volumes = [item["volume"] for item in history]
     if len(closes) < 80:
-        return {
-            "symbol": symbol,
-            "action": "Insufficient data",
-            "confidence": 35,
-            "score": 0,
-            "thesis": "The historical data window is too small for a responsible forecast.",
-            "risk": "Wait for more complete market history before acting on this symbol.",
-            "indicators": {},
-        }
+        return score_from_snapshot(stock, horizon)
 
     latest = closes[-1]
     return_one_month = percent_change(latest, closes[-22]) if len(closes) >= 22 else None
