@@ -458,7 +458,7 @@ function App() {
                 <View style={styles.sectionMetaWrap}>
                   <Text style={styles.sourceText}>
                     {snapshot.asOf
-                      ? `Latest PSX session: ${snapshot.asOf}`
+                      ? "Latest PSX session"
                       : sourceMode === "live"
                         ? "Live adapter"
                         : "Live PSX data unavailable; using saved fallback values"}
